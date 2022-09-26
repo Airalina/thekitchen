@@ -6,18 +6,19 @@ use Illuminate\View\Component;
 
 class ModuleList extends Component
 {
-    public $elements, $module, $orderItems, $thItems;
+    public $elements, $module, $orderItems, $permission, $thItems;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($elements, string $module = '', array $orderItems = [], array $thItems = [])
+    public function __construct($elements, string $module = '', array $orderItems = [], array $thItems = [], string $permission)
     {   
         $this->elements = $elements;
         $this->module = $module;
         $this->orderItems = $orderItems;
+        $this->permission = $permission;
         $this->thItems = $thItems;
     }
 

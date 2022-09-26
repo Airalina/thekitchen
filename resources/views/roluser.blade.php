@@ -2,6 +2,7 @@
 
 @section('title', 'Roles y Usuarios')
 
+@section('plugins.Select2', true)
 @section('content_header')
     <h1>Roles y Usuarios</h1>
 @stop
@@ -37,6 +38,7 @@
         </div>
     </div>
     @livewireScripts
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @stop
 
 @section('footer')
@@ -51,4 +53,5 @@
     <script>
         console.log('Hi!');
     </script>
+
 @stop

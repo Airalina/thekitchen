@@ -6,8 +6,14 @@
             </div>
             <div class="col-2 card-tools">
                 <div class="input-group input-group-sm">
-                    <input wire:model="search" type="text" class="form-control float-right"
-                        placeholder="Buscar {{ $module }}...">
+                    <x-adminlte-input name="search" placeholder="Buscar {{ $module }}..." igroup-size="sm"
+                        wire:model="search">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text text-olive">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input>
                 </div>
             </div>
         </div>
@@ -17,20 +23,23 @@
             <label class="float-left">Registros por página:</label>
         </div>
         <div class="row justify-content-between">
-            <div class="col-2">
-                <input type="number" min="1" wire:model="pages" class="form-control w-50">
+            <div class="col-2 w-50">
+                <x-adminlte-input name="pages" placeholder="number" type="number" wire:model="pages" min=1>
+                </x-adminlte-input>
             </div>
             <div class="col-2">
-                <div class="input-group input-group-sm">
-                    <x-adminlte-button label="Crear {{ $module }}" class='bg-olive' wire:click="create" />
-                </div>
+                @can("$permission.create")
+                    <div class="input-group input-group-sm">
+                        <x-adminlte-button label="Crear {{ $module }}" class='bg-olive' wire:click="create" />
+                    </div>
+                @endcan
             </div>
         </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body table-responsive">
         <x-layouts.order-by :items="$orderItems" />
-        <x-layouts.lists :elements="$elements" :items="$thItems" :module="$module" />
+        <x-layouts.lists :elements="$elements" :items="$thItems" :module="$module" :permission="$permission" />
         {{ $elements->links() }}
     </div>
     <!-- /.card-body -->

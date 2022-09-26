@@ -12,13 +12,19 @@
             @forelse($elements as $element)
                 <tr>
                     <x-layouts.list-table-elements :element="$element" :module="$module" />
-                    <td style="text-align: center">
-                        <button type="button" wire:click="detail({{ $element->id }})"
-                            class="btn btn-primary btn-sm">Ver</button>
-                        <button type="button" wire:click="edit({{ $element->id }})"
-                            class="btn btn-success btn-sm">Actualizar</button>
-                        <button type="button" wire:click="destroy({{ $element->id }})"
-                            class="btn btn-danger btn-sm">Borrar</button>
+                    <td class="text-center">
+                        @can("$permission.show")
+                            <button type="button" wire:click="show({{ $element->id }})"
+                                class="btn btn-primary btn-sm"><i class="fas fa-solid fa-eye"></i></button>
+                        @endcan
+                        @can("$permission.update")
+                            <button type="button" wire:click="edit({{ $element->id }})"
+                                class="btn btn-success btn-sm"><i class="fas fa-light fa-pen"></i></button>
+                        @endcan
+                        @can("$permission.delete")
+                            <button type="button" wire:click="destroy({{ $element->id }})"
+                                class="btn btn-danger btn-sm"><i class="fas fa-solid fa-trash"></i></button>
+                        @endcan
                     </td>
                 </tr>
             @empty

@@ -1,7 +1,9 @@
 <div>
     @switch($view)
-        @case('list')
-            @include('user.list')
+        @case('index')
+            @can('user.index')
+                @include('user.index')
+            @endcan
         @break
 
         @case('create')
@@ -9,7 +11,11 @@
         @break
 
         @case('edit')
-            @include('user.edit')
+            @include('user.update')
+        @break
+
+        @case('show')
+            @include('user.show')
         @break
     @endswitch
 </div>

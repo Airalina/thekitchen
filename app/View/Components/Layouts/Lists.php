@@ -6,18 +6,19 @@ use Illuminate\View\Component;
 
 class Lists extends Component
 {
-    public $elements, $items, $module;
+    public $elements, $items, $module, $permission;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($elements, array $items, string $module)
+    public function __construct($elements, array $items, string $module, string $permission)
     {   
         $this->elements = $elements;
         $this->items = $items;
         $this->module = $module;
+        $this->permission = $permission;
     }
 
     /**

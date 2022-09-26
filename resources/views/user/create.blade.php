@@ -6,8 +6,9 @@
         </div>
         <form>
             <div class="card-body">
-                <x-users.form-user />
+                <x-users.form-user disabled='0' :roles="$roles"  />
             </div>
         </form>
         <x-layouts.form-buttons method='store' name='Guardar' />
     </div>
+</div>

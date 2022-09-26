@@ -9,14 +9,31 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
+    use HasRoles;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+
+    const ROLES = [
+        'super_admin' => 'super admin',
+        'client' => 'cliente',
+        'employee' => 'empleado',
+    ];
+
+    const PERMISSIONS = [
+        'user.index' => 'user.index',
+        'user.create' => 'user.create',
+        'user.update' => 'user.update',
+        'user.show' => 'user.show',
+        'user.delete' => 'user.delete',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -25,8 +42,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'dni',
+        'domicile',
         'email',
         'password',
+        'phone',
+        'username'
     ];
 
     /**
@@ -65,4 +86,5 @@ class User extends Authenticatable
             ->orWhere('name', 'LIKE', '%' . $search . '%')
             ->orWhere('email', 'LIKE', '%' . $search . '%');
     }
+
 }

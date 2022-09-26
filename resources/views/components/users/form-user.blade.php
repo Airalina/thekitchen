@@ -1,40 +1,67 @@
-<div class="form-group">
-    <label for="username">Nombre usuario</label>
-    <input type="text" class="form-control form-control-sm" id="username" wire:model="user.username"
-        placeholder="Nombre de usuario">
-</div>
-<div class="form-group">
-    <label for="name">Nombre y apellido</label>
-    <input type="text" class="form-control form-control-sm" id="name" wire:model="user.name"
-        placeholder="Nombre y apellido">
-</div>
-<div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control form-control-sm" id="email" wire:model="user.email"
-        placeholder="Email">
-</div>
-<div class="form-group">
-    <label for="phone">Teléfono</label>
-    <input type="text" class="form-control form-control-sm" id="phone" wire:model="user.phone"
-        placeholder="Telefono">
-</div>
-<div class="form-group">
-    <label for="domicile">Domicilio</label>
-    <input type="text" class="form-control form-control-sm" id="domicile" wire:model="user.domicile"
-        placeholder="Domicilio">
-</div>
-<div class="form-group">
-    <label for="dni">D.N.I.</label>
-    <input type="text" class="form-control form-control-sm" id="dni" wire:model="user.dni"
-        placeholder="D.N.I.">
-</div>
-<div class="form-group">
-    <label for="password">Contraseña</label>
-    <input id="password" class="form-control form-control-sm" wire:model="user.password" type="password"
-        name="password" required autocomplete="new-password" placeholder="Contraseña" />
-</div>
-<div class="form-group">
-    <label for="password_confirmation">Repetir contraseña</label>
-    <input id="password_confirmation" class="form-control form-control-sm" wire:model="user.password_confirmation"
-        type="password" name="password_confirmation" required placeholder="Contraseña" />
-</div>
+<x-adminlte-input name="username" label="Nombre de usuario" id="username" placeholder="Nombre de usuario"
+    wire:model="user.username" :disabled="$disabled">
+
+</x-adminlte-input>
+
+<x-adminlte-input name="name" label="Nombre y apellido" id="name" placeholder="Nombre y apellido" wire:model="user.name"
+    :disabled="$disabled">
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.name' />
+    </x-slot>
+</x-adminlte-input>
+
+<x-adminlte-input name="email" label="Email" type="email" id="email" placeholder="Email" wire:model="user.email"
+    :disabled="$disabled">
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.email' />
+    </x-slot>
+</x-adminlte-input>
+
+<x-adminlte-input name="phone" label="Teléfono" id="phone" placeholder="Teléfono" wire:model="user.phone"
+    :disabled="$disabled">
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.phone' />
+    </x-slot>
+</x-adminlte-input>
+
+<x-adminlte-input name="domicile" label="Domicilio" id="domicile" placeholder="Domicilio" wire:model="user.domicile"
+    :disabled="$disabled">
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.domicile' />
+    </x-slot>
+</x-adminlte-input>
+
+<x-adminlte-input name="dni" label="D.N.I" id="dni" placeholder="D.N.I" wire:model="user.dni" :disabled="$disabled">
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.dni' />
+    </x-slot>
+</x-adminlte-input>
+
+@php
+$config = [
+    'placeholder' => 'Select multiple options...',
+    'allowClear' => true,
+];
+@endphp
+<x-adminlte-select2 id="role" name="role[]" label="Roles" igroup-size="lg" :config="$config" wire:model="user.roles"
+    multiple :disabled="$disabled">
+    @foreach ($roles as $role)
+        <option>{{ $role['name'] }}</option>
+    @endforeach
+</x-adminlte-select2>
+
+@if (!$disabled)
+    <x-adminlte-input name="password" label="Contraseña" type="password" id="password" placeholder="Contraseña"
+        wire:model="user.password" :disabled="$disabled">
+        <x-slot name="bottomSlot">
+            <x-layouts.show-error error='user.password' />
+        </x-slot>
+    </x-adminlte-input>
+
+    <x-adminlte-input name="password_confirmation" label="Repetir contraseña" type="password" id="password_confirmation"
+        placeholder="Repetir contraseña" wire:model="user.password_confirmation" :disabled="$disabled">
+        <x-slot name="bottomSlot">
+            <x-layouts.show-error error='user.password_confirmation' />
+        </x-slot>
+    </x-adminlte-input>
+@endif
