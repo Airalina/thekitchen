@@ -1,6 +1,6 @@
 <?php
 
-function validateUsers()
+function validateUsers($view = '')
 {
     return [
         'user.username' => 'required|string|min:5',
@@ -9,8 +9,8 @@ function validateUsers()
         'user.domicile' => 'required|string|min:6',
         'user.dni' => 'required|numeric|min:1000000|max:100000000',
         'user.phone' => 'required|numeric|min:1000000000',
-        'user.password' => 'required|min:8|confirmed',
-        'user.roles' => 'required|array'
+        'user.password' => 'required_if:view,create|min:8|confirmed',
+        'user.rols' => 'required|array'
     ];
 }
 

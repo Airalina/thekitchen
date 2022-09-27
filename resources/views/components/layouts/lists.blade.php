@@ -22,7 +22,7 @@
                                 class="btn btn-success btn-sm"><i class="fas fa-light fa-pen"></i></button>
                         @endcan
                         @can("$permission.delete")
-                            <button type="button" wire:click="destroy({{ $element->id }})"
+                            <button type="button" wire:click="deleteConfirm({{ $element->id }})"
                                 class="btn btn-danger btn-sm"><i class="fas fa-solid fa-trash"></i></button>
                         @endcan
                     </td>

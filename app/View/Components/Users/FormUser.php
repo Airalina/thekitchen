@@ -6,17 +6,18 @@ use Illuminate\View\Component;
 
 class FormUser extends Component
 {
-    public $disabled, $roles;
+    public $disabled, $roles, $showPassword;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(bool $disabled = false, array $roles)
+    public function __construct(bool $disabled = false, array $roles, bool $showPassword = true)
     {
         $this->disabled = $disabled;
         $this->roles = $roles;
+        $this->showPassword = $showPassword;
     }
 
     /**

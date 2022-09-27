@@ -43,14 +43,17 @@ $config = [
     'allowClear' => true,
 ];
 @endphp
-<x-adminlte-select2 id="role" name="role[]" label="Roles" igroup-size="lg" :config="$config" wire:model="user.roles"
+<x-adminlte-select2 id="role" name="role[]" label="Roles" igroup-size="lg" :config="$config" wire:model="user.rols"
     multiple :disabled="$disabled">
     @foreach ($roles as $role)
         <option>{{ $role['name'] }}</option>
     @endforeach
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.rols' />
+    </x-slot>
 </x-adminlte-select2>
 
-@if (!$disabled)
+@if ($showPassword)
     <x-adminlte-input name="password" label="Contraseña" type="password" id="password" placeholder="Contraseña"
         wire:model="user.password" :disabled="$disabled">
         <x-slot name="bottomSlot">

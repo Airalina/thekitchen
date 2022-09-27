@@ -17,5 +17,7 @@
         @case('show')
             @include('user.show')
         @break
+
     @endswitch
 </div>
+

@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Role;
 class Users extends Component
 {
     use WithPagination;
+    protected $listeners = ['deleteUser' => 'delete'];
     protected $paginationTheme = 'bootstrap', $users;
     public $view = 'index', $order = 'id', $search = '', $pages = 10;
     public $orderItems = [], $thItems = [], $user = [], $roles = [];
@@ -29,7 +30,7 @@ class Users extends Component
 
     public function render()
     {
-        $this->roles = Role::all()->toArray(); 
+        $this->roles = Role::all()->toArray();
         $this->users = User::search($this->search)->paginate($this->pages);
 
         return view('livewire.users', [
@@ -44,13 +45,12 @@ class Users extends Component
     }
 
     public function store()
-    {  
-        $validations = validateUsers();
-        $validatedData = $this->validate($validations);  
+    {
+        $validations = validateUsers($this->view);
+        $validatedData = $this->validate($validations);
         $validatedData['user']['password'] = Hash::make($validatedData['user']['password']);
         $user = User::create($validatedData['user']);
-        $user->assignRole($validatedData['user']['roles']);
-        $this->emit('userStore');
+        $user->assignRole($validatedData['user']['rols']);
         $this->reset();
     }
 
@@ -58,32 +58,51 @@ class Users extends Component
     {
         if ($user) {
             $this->view = "show";
-            $this->user = $this->fillData($user);
-           
+            $this->user = $user->toArray();
             return $this->view;
         }
         return null;
     }
 
-    
-    public function fillData(User $user)
+    public function edit(User $user)
     {
         if ($user) {
-            $user = [
-                'name' => $user->name,
-                'email' => $user->email, 
-                'dni' => $user->dni, 
-                'domicile' => $user->domicile, 
-                'phone' => $user->phone, 
-                'username' => $user->username, 
-                'roles' => $user->getRoleNames()
-            ];
+            $this->view = "edit";
+            $this->user = $user->toArray();
+            return $this->view;
+        }
+        return null;
+    }
 
+    public function update()
+    {
+        $user = User::findOrfail($this->user['id']);
+        if ($user) {
+            $validations = validateUsers();
+            $validatedData = $this->validate($validations);
+            $user->update($validatedData['user']);
+            $user->syncRoles([]);
+            $user->assignRole($validatedData['user']['rols']);
+            $this->reset();
             return $user;
         }
         return null;
     }
 
+    public function deleteConfirm($id)
+    {
+        $this->user = User::find($id);
+
+        $this->dispatchBrowserEvent('delete_confirm');
+    }
+
+    public function delete()
+    {
+        $user = User::find($this->user['id']);
+        if ($user) {
+            $user->delete();
+        }
+    }
 
     public function back()
     {
