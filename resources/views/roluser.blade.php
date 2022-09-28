@@ -65,7 +65,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => { 
                 if (result.value) { 
-                Livewire.emit('deleteUser')
+                Livewire.emit('deleteRole')
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',

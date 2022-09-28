@@ -112,9 +112,9 @@ class Roles extends Component
         if ($role) {
             $this->view = "edit";
             $this->role = $role->toArray();
-            $permissionsNames = $role->getPermissionNames(); 
+            $permissionsNames = $role->getPermissionNames();
             foreach ($permissionsNames as $permission) {
-                $key = explode(".", $permission); 
+                $key = explode(".", $permission);
                 $permissions[$key[0]][$permission] = $permission;
             }
             $this->dataPermissions['permissionsSelected'] = $permissions;
@@ -141,17 +141,16 @@ class Roles extends Component
 
     public function deleteConfirm($id)
     {
-        // $this->user = User::find($id);
-
+        $this->role = Role::find($id);
         $this->dispatchBrowserEvent('delete_confirm');
     }
 
     public function delete()
     {
-        /*  $user = User::find($this->user['id']);
-        if ($user) {
-            $user->delete();
-        }*/
+        $role = Role::find($this->role['id']);
+        if ($role) {
+            $role->delete();
+        }
     }
 
     public function back()
