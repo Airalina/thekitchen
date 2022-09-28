@@ -31,7 +31,7 @@ class Users extends Component
     public function render()
     {
         $this->roles = Role::all()->toArray();
-        $this->users = User::search($this->search)->paginate($this->pages);
+        $this->users = User::search($this->search, $this->order)->paginate($this->pages);
 
         return view('livewire.users', [
             'users' => $this->users,

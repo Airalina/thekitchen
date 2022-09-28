@@ -83,11 +83,12 @@ class User extends Authenticatable
         'rols',
     ];
 
-    public static function search($search = '')
+    public static function search($search = '', $orderBy = 'id')
     {
         return self::where('id', 'LIKE', '%' . $search . '%')
             ->orWhere('name', 'LIKE', '%' . $search . '%')
-            ->orWhere('email', 'LIKE', '%' . $search . '%');
+            ->orWhere('email', 'LIKE', '%' . $search . '%')
+            ->orderBy($orderBy);
     }
     public function getRolsAttribute()
     {   
