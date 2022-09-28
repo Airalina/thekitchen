@@ -1,6 +1,8 @@
 <x-adminlte-input name="username" label="Nombre de usuario" id="username" placeholder="Nombre de usuario"
     wire:model="user.username" :disabled="$disabled">
-
+    <x-slot name="bottomSlot">
+        <x-layouts.show-error error='user.username' />
+    </x-slot>
 </x-adminlte-input>
 
 <x-adminlte-input name="name" label="Nombre y apellido" id="name" placeholder="Nombre y apellido" wire:model="user.name"

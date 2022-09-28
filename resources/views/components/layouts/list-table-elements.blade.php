@@ -5,7 +5,9 @@
         <td class="text-center">{{ $element->email }}</td>
     @break
 
-    @case(2)
+    @case('roles')
+        <td class="text-center">{{ $element->id }}</td>
+        <td class="text-center">{{ $element->name }}</td>
     @break
 
     @default

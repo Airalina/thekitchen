@@ -35,6 +35,11 @@ class User extends Authenticatable
         'user.update' => 'user.update',
         'user.show' => 'user.show',
         'user.delete' => 'user.delete',
+        'role.index' => 'role.index',
+        'role.create' => 'role.create',
+        'role.update' => 'role.update',
+        'role.show' => 'role.show',
+        'role.delete' => 'role.delete',
     ];
 
     /**

@@ -14,3 +14,11 @@ function validateUsers($view = '')
     ];
 }
 
+function validateRoles()
+{
+    return [
+        'role.name'=>'required|string|min:3',
+        'dataPermissions.permissionsSelected'=>'required',
+        'dataPermissions.permissionsSelected.*'=>'required',
+    ];
+}

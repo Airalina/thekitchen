@@ -6,26 +6,30 @@
             </div>
             <div class="col-2 card-tools">
                 <div class="input-group input-group-sm">
-                    <x-adminlte-input name="search" placeholder="Buscar {{ $module }}..." igroup-size="sm"
-                        wire:model="search">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text text-olive">
-                                <i class="fas fa-search"></i>
-                            </div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    @if ($module != 'roles')
+                        <x-adminlte-input name="search" placeholder="Buscar {{ $module }}..." igroup-size="sm"
+                            wire:model="search">
+                            <x-slot name="prependSlot">
+                                <div class="input-group-text text-olive">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </x-slot>
+                        </x-adminlte-input>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
     <div class="card-header">
         <div class="row">
-            <label class="float-left">Registros por página:</label>
+            <label class="float-left">{{ $module != 'roles' && $module != 'usuarios' ? 'Registros por página:' : '' }}</label>
         </div>
         <div class="row justify-content-between">
             <div class="col-2 w-50">
+                @if ($module != 'roles' && $module != 'usuarios')
                 <x-adminlte-input name="pages" placeholder="number" type="number" wire:model="pages" min=1>
                 </x-adminlte-input>
+                @endif
             </div>
             <div class="col-2">
                 @can("$permission.create")
@@ -40,7 +44,7 @@
     <div class="card-body table-responsive">
         <x-layouts.order-by :items="$orderItems" />
         <x-layouts.lists :elements="$elements" :items="$thItems" :module="$module" :permission="$permission" />
-        {{ $elements->links() }}
+        {{ $module != 'roles' && $module != 'usuarios' ? $elements->links() : '' }}
     </div>
     <!-- /.card-body -->
 </div>

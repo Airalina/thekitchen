@@ -34,7 +34,7 @@
                 </div>
                 <div class="tab-pane fade" id="custom-tabs-five-overlay-dark" role="tabpanel"
                     aria-labelledby="custom-tabs-five-overlay-dark-tab">
-                    @livewire('rols')
+                    @livewire('roles')
                 </div>
             </div>
         </div>
@@ -73,6 +73,12 @@
                     )
                 }
             })
+        })
+        window.addEventListener('show-form-permission', event => {
+            $('#form-permission').modal('show');
+        })
+        window.addEventListener('hide-form-permission', event => {
+            $('#form-permission').modal('hide');
         })
     </script>
 

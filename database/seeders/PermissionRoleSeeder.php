@@ -26,9 +26,8 @@ class PermissionRoleSeeder extends Seeder
         $employeePermissions = [
             User::PERMISSIONS['user.index'],
             User::PERMISSIONS['user.show'],
-            User::PERMISSIONS['user.create'],
-            User::PERMISSIONS['user.update'],
-            User::PERMISSIONS['user.delete'],
+            User::PERMISSIONS['role.index'],
+            User::PERMISSIONS['role.show'],
         ];
         $employee = Role::findByName(User::ROLES['employee']);
         $employee->givePermissionTo($employeePermissions);
