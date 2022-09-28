@@ -76,26 +76,32 @@ class Roles extends Component
     {
         $validations = validateRoles();
         $validatedData = $this->validate($validations);
-        $dataPermisions = collect($validatedData['dataPermissions']['permissionsSelected']); 
-        $permissionsSelected = $dataPermisions->flatten(); 
-        foreach ($permissionsSelected as $permission) {
-            $permissions[] = Permission::findOrCreate($permission);
-        } 
+        $permissions = $this->getPermissions($validatedData['dataPermissions']['permissionsSelected']);
         $role =  Role::firstOrCreate($validatedData['role']);
         $role->givePermissionTo($permissions);
 
         $this->reset();
     }
 
+    public function getPermissions(array $permissionsSelected)
+    {
+        $dataPermisions = collect($permissionsSelected);
+        $permissionsSelected = $dataPermisions->flatten();
+        foreach ($permissionsSelected as $permission) {
+            $permissions[] = Permission::findOrCreate($permission);
+        }
+        return $permissions;
+    }
+
     public function show(Role $role)
     {
-        if ($role) { 
+        if ($role) {
             $this->view = "show";
             $this->role = $role->toArray();
             $this->dataPermissions = [
-                'permissionsSelected' => [ $role->getPermissionNames()->toArray()], 
-                'permissions' =>  [], 
-            ]; 
+                'permissionsSelected' => [$role->getPermissionNames()->toArray()],
+                'permissions' =>  [],
+            ];
             return $this->view;
         }
         return null;
@@ -106,24 +112,31 @@ class Roles extends Component
         if ($role) {
             $this->view = "edit";
             $this->role = $role->toArray();
+            $permissionsNames = $role->getPermissionNames(); 
+            foreach ($permissionsNames as $permission) {
+                $key = explode(".", $permission); 
+                $permissions[$key[0]][$permission] = $permission;
+            }
+            $this->dataPermissions['permissionsSelected'] = $permissions;
             return $this->view;
         }
         return null;
     }
 
     public function update()
-    {/*
-        $role = User::findOrfail($this->role['id']);
+    {
+        $role = Role::find($this->role['id']);
         if ($role) {
-            $validations = validateUsers();
+            $validations = validateRoles();
             $validatedData = $this->validate($validations);
             $role->update($validatedData['role']);
-            $role->syncRoles([]);
-            $role->assignRole($validatedData['role']['rols']);
+            $role->syncPermissions([]);
+            $permissions = $this->getPermissions($validatedData['dataPermissions']['permissionsSelected']);
+            $role->givePermissionTo($permissions);
             $this->reset();
             return $role;
-        }*
-        return null;*/
+        }
+        return null;
     }
 
     public function deleteConfirm($id)

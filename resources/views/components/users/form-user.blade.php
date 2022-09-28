@@ -35,7 +35,7 @@
 
 <x-adminlte-input name="dni" label="D.N.I" id="dni" placeholder="D.N.I" wire:model="user.dni" :disabled="$disabled">
     <x-slot name="bottomSlot">
-        <x-layouts.show-error error='user.dni' />
+        <x-layouts.show-error error='dataPermissions.permissionsSelected' />
     </x-slot>
 </x-adminlte-input>
 
