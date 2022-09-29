@@ -10,7 +10,7 @@ class Admixture extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $fillable = [
         'code',
         'description',
@@ -19,4 +19,12 @@ class Admixture extends Model
         'stock',
         'type_id',
     ];
+
+    public static function search($search = '', $orderBy = 'id')
+    {
+        return self::where('code', 'LIKE', '%' . $search . '%')
+            ->orWhere('description', 'LIKE', '%' . $search . '%')
+            ->orWhere('name', 'LIKE', '%' . $search . '%')
+            ->orderBy($orderBy);
+    }
 }

@@ -291,13 +291,69 @@ return [
 
     'menu' => [
         // Sidebar items:
-        ['header' => 'account_settings'],
+        ['header' => 'PERSONAS'],
         [
             'text' => 'Roles y Usuarios',
             'url'  => 'rolusers',
             'icon' => 'fas fa-fw fa-user',
             'can'  => ['user.index'],
-        ]
+        ],        
+        [
+            'text' => 'Clientes',
+            'url'  => 'clients',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['client.index'],
+        ],        
+        [
+            'text' => 'Proveedores',
+            'url'  => 'providers',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['provider.index'],
+        ],
+        ['header' => 'PRODUCTOS'],
+        [
+            'text' => 'Alimentos',
+            'url'  => 'admixtures',
+            'icon' => 'fas fa-shopping-basket',
+            'can'  => ['admixture.index'],
+        ],        
+        [
+            'text' => 'Combo',
+            'url'  => 'combos',
+            'icon' => 'fas fa-shopping-basket',
+            'can'  => ['combo.index'],
+        ],        
+        ['header' => 'ADMINISTRACIÓN'],
+        [
+            'text' => 'Pedidos',
+            'url'  => 'orders',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['order.index'],
+        ],        
+        [
+            'text' => 'Planillas de compra',
+            'url'  => 'purchase_sheets',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['purchase_sheet.index'],
+        ],        
+        [
+            'text' => 'Ordenes de ingreso',
+            'url'  => 'entry_orders',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['entry_order.index'],
+        ],        
+        [
+            'text' => 'Ordenes de egreso',
+            'url'  => 'expenditure_orders',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['expenditure_order.index'],
+        ],        
+        [
+            'text' => 'Depósitos',
+            'url'  => 'warehouses',
+            'icon' => 'fas fa-fw fa-user',
+            'can'  => ['warehouse.index'],
+        ],
     ],
 
     /*
