@@ -19,4 +19,13 @@ class Provider extends Model
         'status',
         'url',
     ];
+
+    public static function search($search = '', $orderBy = 'id')
+    {
+        return self::where('cuit', 'LIKE', '%' . $search . '%')
+            ->orWhere('name', 'LIKE', '%' . $search . '%')
+            ->orWhere('email', 'LIKE', '%' . $search . '%')
+            ->orWhere('phone', 'LIKE', '%' . $search . '%')
+            ->orderBy($orderBy);
+    }
 }

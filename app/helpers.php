@@ -47,3 +47,17 @@ function validateDeliveryAddresses()
         'deliveryAddress.postcode' => 'required|integer|min:1|max:100000',
     ];
 }     
+
+function validateProviders()
+{
+    $regex = '/^((?:www\.)(?:[-a-z0-9]+\.)*[-a-z0-9]+.*)$/';
+    return [
+        'provider.name' => 'required|string|min:10',
+        'provider.email' => 'required|email',
+        'provider.address' => 'nullable|string|min:6',
+        'provider.cuit' => 'required|numeric|min:1000000|max:100000000',
+        'provider.phone' => 'nullable|numeric|min:1000000000',
+        'provider.status' => 'nullable|boolean',
+        'provider.url' => 'nullable|regex: ' . $regex
+    ];
+}     
