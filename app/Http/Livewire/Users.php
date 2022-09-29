@@ -106,6 +106,7 @@ class Users extends Component
 
     public function back()
     {
+        $this->resetValidation();
         return $this->reset();
     }
 }

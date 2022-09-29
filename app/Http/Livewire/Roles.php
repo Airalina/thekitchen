@@ -155,6 +155,7 @@ class Roles extends Component
 
     public function back()
     {
+        $this->resetValidation();
         return $this->reset();
     }
 

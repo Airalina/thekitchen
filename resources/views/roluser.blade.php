@@ -11,7 +11,7 @@
 
 @section('content')
     @livewireStyles
-    <div class="card card-olive card-tabs">
+    <div class="card card-olive card-tabs col-md-8">
         <div class="card-header p-0 pt-1">
             <ul class="nav nav-tabs" id="custom-tabs-five-tab" role="tablist">
                 <li class="nav-item">
