@@ -12,11 +12,9 @@ class Order extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'customer_id',
+        'client_id',
         'deliverydomicile_id',
         'end_date',
-        'start_date',
-        'date',
         'status',
         'total_usd_price',
     ];

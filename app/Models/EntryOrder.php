@@ -13,10 +13,10 @@ class EntryOrder extends Model
 
     protected $fillable = [
         'buy_order_id',
-        'follow_number',
+        'date',
+        'hour',
         'origin',
         'reason',
-        'date',
-        'hour'
+        'tracking_number',
     ];
 }

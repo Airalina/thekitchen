@@ -12,12 +12,11 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'address',
         'cuit',
-        'domicile',
         'email',
         'name',
         'phone',
-        'state',
+        'status',
     ];
 }

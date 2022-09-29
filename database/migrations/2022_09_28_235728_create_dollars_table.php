@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('dollars', function (Blueprint $table) {
             $table->id();
+            $table->float('arp_price', 11, 3)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

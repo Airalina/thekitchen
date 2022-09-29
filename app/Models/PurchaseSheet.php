@@ -13,7 +13,6 @@ class PurchaseSheet extends Model
 
     protected $fillable = [
         'date', 
-        'count_orders', 
-        'total_price'
+        'total_usd'
     ];
 }

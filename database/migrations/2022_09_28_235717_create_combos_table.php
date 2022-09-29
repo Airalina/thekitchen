@@ -15,8 +15,14 @@ return new class extends Migration
     {
         Schema::create('combos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')->nullable()->constrained('clients');
+            $table->string('code')->unique();
+            $table->date('date')->nullable();
+            $table->string('description')->nullable();
+            $table->float('usd_price', 11, 3)->nullable();
             $table->timestamps();
-        });
+            $table->softDeletes();
+        });        
     }
 
     /**

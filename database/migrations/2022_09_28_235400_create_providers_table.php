@@ -15,7 +15,15 @@ return new class extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->id();
+            $table->string('address')->nullable();
+            $table->bigInteger('cuit')->nullable();
+            $table->string('email')->unique();
+            $table->string('name');
+            $table->bigInteger('phone')->nullable();
+            $table->boolean('status')->default(1);
+            $table->string('url')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

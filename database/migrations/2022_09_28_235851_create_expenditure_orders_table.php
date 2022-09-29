@@ -15,10 +15,17 @@ return new class extends Migration
     {
         Schema::create('expenditure_orders', function (Blueprint $table) {
             $table->id();
+            $table->date('date')->nullable();
+            $table->time('hour')->nullable();
+            $table->foreignId('client_id')->nullable()->constrained('clients');
+            $table->string('reason')->nullable();
+            $table->string('responsible')->nullable();
+            $table->string('tracking_number')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

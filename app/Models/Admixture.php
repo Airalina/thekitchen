@@ -13,12 +13,10 @@ class Admixture extends Model
     
     protected $fillable = [
         'code',
-        'name',
-        'amount',
-        'type_id',
         'description',
+        'name',
         'replace_id',
         'stock',
-        'image'
+        'type_id',
     ];
 }

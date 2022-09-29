@@ -12,14 +12,12 @@ class ExpenditureOrder extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'responsible',
-        'follow_number',
-        'origin',
-        'reason',
-        'status',
+        'client_id',
         'date',
         'hour',
-        'client_id'
+        'reason',
+        'responsible',
+        'tracking_number'
     ];
     
 }

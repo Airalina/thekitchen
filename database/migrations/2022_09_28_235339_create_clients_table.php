@@ -15,7 +15,14 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('cuit')->nullable();
+            $table->string('address')->nullable();
+            $table->string('email')->unique();
+            $table->string('name');
+            $table->bigInteger('phone')->nullable();
+            $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')->nullable()->constrained('clients');
+            $table->date('end_date');
+            $table->boolean('status')->default(1);
+            $table->float('total_usd_price', 11, 3);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
-
     /**
      * Reverse the migrations.
      *

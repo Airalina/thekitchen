@@ -12,12 +12,12 @@ class Warehouse extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'addres',
         'name',
+        'date',
         'description',
-        'location',
-        'create_date',
-        'state',
+        'status',
+        'temporary',
         'type',
-        'temporary'
     ];
 }

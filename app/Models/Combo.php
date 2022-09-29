@@ -12,10 +12,10 @@ class Combo extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'client_id',
         'code',
         'date',
         'description',
         'usd_price',
-        'customer_id',
     ];
 }

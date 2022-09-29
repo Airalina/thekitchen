@@ -15,9 +15,12 @@ return new class extends Migration
     {
         Schema::create('purchase_sheets', function (Blueprint $table) {
             $table->id();
+            $table->date('date')->nullable();
+            $table->float('total_usd', 11, 3)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
-    }
+    }       
 
     /**
      * Reverse the migrations.
