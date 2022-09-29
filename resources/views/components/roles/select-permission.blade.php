@@ -27,6 +27,9 @@
                 </tbody>
             </table>
         </div>
+        <x-slot name="bottomSlot">
+            <x-layouts.show-error error='user.dni' />
+        </x-slot>
     @endif
     <!-- /.card-body -->
 </div>
