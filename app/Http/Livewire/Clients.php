@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Client;
+use App\Models\DeliveryAddress;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,8 +13,8 @@ class Clients extends Component
     protected $listeners = ['deleteClient' => 'delete'];
     protected $paginationTheme = 'bootstrap', $clients;
     public $view = 'index', $order = 'id', $search = '', $pages = 10;
-    public $orderItems = [], $thItems = [], $client = [], $deliveryAddress, $deliveryAddresses = [];
-    public $deliveryInformation;
+    public $orderItems = [], $thItems = [], $client = [], $deliveryAddresses = [];
+    public $deliveryInformation, $deliveryAddress;
 
     public function __construct()
     {
@@ -27,6 +28,11 @@ class Clients extends Component
         $this->client['status'] = true;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function render()
     {
         $this->clients = Client::search($this->search, $this->order)->paginate($this->pages);
@@ -36,13 +42,23 @@ class Clients extends Component
         ]);
     }
 
-    public function create()
+    /**
+     * View to create a resource in storage.
+     *
+     * @return string $view
+     */
+    public function create(): string
     {
         $this->view = 'create';
         return $this->view;
     }
 
-    public function store()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Client $client
+     */
+    public function store(): Client
     {
         $validations = validateClients();
         $validatedData = $this->validate($validations);
@@ -51,16 +67,27 @@ class Clients extends Component
             $this->storeDeliveryAddress($client);
         }
         $this->back();
+        return $client;
     }
 
-    public function createDeliveryAddress()
+    /**
+     * View to create a resource in storage.
+     *
+     * @return string $view
+     */
+    public function createDeliveryAddress(): string
     {
         $this->view = 'createDeliveryAddress';
         return $this->view;
     }
 
-
-    public function storeDeliveryAddress(Client $client)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Client $client
+     * @return DeliveryAddress $deliveryAddress
+     */
+    public function storeDeliveryAddress(Client $client): DeliveryAddress
     {
         $validations = validateDeliveryAddresses();
         $validatedData = $this->validate($validations);
@@ -69,18 +96,31 @@ class Clients extends Component
         return $deliveryAddress;
     }
 
-    public function show(Client $client)
+    /**
+     * Display  the specified resource.
+     *
+     * @param Client $client
+     * @return Client $client|null
+     */
+    public function show(Client $client): Client|null
     {
         if ($client) {
             $this->view = "show";
             $this->client = $client->toArray();
             $this->deliveryAddresses = $client->deliveryAddresses->toArray();
-            return $this->view;
+            return $this->client;
         }
         return null;
     }
 
-    public function backShow(Client $client)
+
+    /**
+     * Display  the specified resource.
+     *
+     * @param Client $client
+     * @return Client $client|null
+     */
+    public function backShow(Client $client): Client|null
     {
         if ($client) {
             $this->reset('deliveryAddress');
@@ -89,27 +129,47 @@ class Clients extends Component
         return null;
     }
 
-    public function edit(Client $client)
+    /**
+     * View to edit the specified resource.
+     *
+     * @param Client $client
+     * @return Client $client|null
+     */
+    public function edit(Client $client): Client|null
     {
         if ($client) {
             $this->view = "edit";
             $this->client = $client->toArray();
-            return $this->view;
+            return $this->client;
         }
         return null;
     }
 
-    public function editDeliveryAddress($deliveryAddressId)
+    /**
+     * View to edit the specified resource.
+     *
+     * @param integer $deliveryAddressId
+     * @return DeliveryAddress $deliveryAddress|null
+     */
+    public function editDeliveryAddress($deliveryAddressId) : Client|null
     {
         $client = Client::find($this->client['id']);
         if ($client) {
             $this->deliveryAddress = $client->deliveryAddresses()->whereId($deliveryAddressId)->first()->toArray();
             $this->view = "editDeliveryAddress";
-            return $this->view;
+            return $this->deliveryAddress;
         }
         return null;
     }
-    public function updateDeliveryAddress(Client $client)
+
+
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @param Client $client
+     * @return Client $client|null
+     */
+    public function updateDeliveryAddress(Client $client) : Client|null
     {
         $validations = validateDeliveryAddresses();
         $validatedData = $this->validate($validations);
@@ -119,10 +179,15 @@ class Clients extends Component
             ],
             $validatedData['deliveryAddress']
         );
-        $this->backShow($client);
+        return $this->backShow($client);
     }
 
-    public function update()
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @return Client $client|null
+     */
+    public function update(): Client|null
     {
         $client = Client::findOrfail($this->client['id']);
         if ($client) {
@@ -135,15 +200,30 @@ class Clients extends Component
         return null;
     }
 
-    public function deleteConfirm($id)
+    /**
+     * Display message delete.
+     * 
+     * @param integer $id
+     * @return Client $client|null
+     */
+    public function deleteConfirm($id): Client|null
     {
         $cliendId = ($this->view == 'index') ? $id : $this->client['id'];
         $this->client =  Client::find($cliendId);
-        $this->deliveryAddress['id'] = $id;
-        $this->dispatchBrowserEvent('delete_confirm');
+        if ($this->client) {
+            $this->deliveryAddress['id'] = $id;
+            $this->dispatchBrowserEvent('delete_confirm');
+            return $this->client;
+        }
+        return null;
     }
 
-    public function delete()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return  void|null
+     */
+    public function delete(): void|null
     {
         $client = Client::find($this->client['id']);
         if ($client) {
@@ -156,12 +236,20 @@ class Clients extends Component
                 $address->delete();
             }
             $client->delete();
+            return;
         }
+        return null;
     }
 
-    public function back()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return void
+     */
+    public function back(): void
     {
         $this->resetValidation();
-        return $this->reset();
+        $this->reset();
+        return; 
     }
 }

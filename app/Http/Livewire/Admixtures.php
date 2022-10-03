@@ -16,8 +16,9 @@ class Admixtures extends Component
     protected $listeners = ['deleteAdmixture' => 'delete'];
     protected $paginationTheme = 'bootstrap', $admixtures;
     public $view = 'index', $order = 'id', $search = '', $pages = 10;
-    public $orderItems = [], $thItems = [], $user = [], $roles = [], $typeSelected, $typeData = [];
-    public $admixture, $type, $types, $meat = [], $fruit = [], $vegetable = [], $replaces = [], $data = [];
+    public $orderItems = [], $thItems = [], $user = [], $roles = [], $meat = [], $fruit = [], $vegetable = [], $replaces = [],
+        $data = [], $typeData = [];
+    public $admixture, $type, $types, $typeSelected;
 
     public function __construct()
     {
@@ -37,6 +38,11 @@ class Admixtures extends Component
         $this->types = Admixture::TYPES;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function render()
     {
         $this->admixtures = Admixture::search($this->search, $this->order)->paginate($this->pages);
@@ -46,13 +52,24 @@ class Admixtures extends Component
         ]);
     }
 
-    public function create()
+    /**
+     * View to create a resource in storage.
+     *
+     * @return string $view
+     */
+    public function create(): string
     {
         $this->view = 'create';
         return $this->view;
     }
 
-    public function updatedAdmixtureType($type, $key, $admixtureId = '')
+    /**
+     * View to create a resource in storage.
+     *
+     * @param integer $type, integer $key, string $admixtureId 
+     * @return string $view
+     */
+    public function updatedAdmixtureType($type, $key, $admixtureId = ''): int
     {
         $this->typeSelected = $type;
 
@@ -74,13 +91,15 @@ class Admixtures extends Component
                 ];
                 break;
         }
-
-        // $this->replaces = Admixture::searchReplaces($type)->whereNotIn('id', [$admixtureId])->toArray();
-        return;
+        return $this->typeSelected;
     }
 
-
-    public function store()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Admixture $admixture
+     */
+    public function store(): Admixture
     {
         $validations = validateAdmixtures();
         $validatedData = $this->validate($validations);
@@ -89,13 +108,24 @@ class Admixtures extends Component
 
         $validatedType = $validatedData[$type['model']];
         $model = "App\Models\\" . ucfirst($type['model']);
+        //create type
         $admixtureType = $model::create($validatedType);
+        //syncronize
         $typeable = $admixtureType->type()->create();
+        //create admixture
         $admixture = $typeable->admixture()->create($validatedData['admixture']);
         $this->reset();
+
+        return $admixture;
     }
 
-    public function show(Admixture $admixture)
+    /**
+     * Display  the specified resource.
+     *
+     * @param Admixture $admixture
+     * @return Admixture $admixture|null
+     */
+    public function show(Admixture $admixture): Admixture|null
     {
         if ($admixture) {
             $this->view = "show";
@@ -103,23 +133,20 @@ class Admixtures extends Component
             $this->admixture = $admixture->toArray();
             $this->admixture['type'] = $this->type;
             $this->updatedAdmixtureType($this->admixture['type'], 1);
-            switch ($this->admixture['type']) {
-                case 1:
-                    $this->fruit = $admixture->admixtureType->typeable->toArray();
-                    break;
-                case 2:
-                    $this->vegetable = $admixture->admixtureType->typeable->toArray();
-                    break;
-                case 3:
-                    $this->meat = $admixture->admixtureType->typeable->toArray();
-                    break;
-            }
-            return $this->view;
+            $model = ($this->admixture['type'] == 1) ? 'fruit' : ($this->admixture['type'] == 2 ? 'vegetable' : 'meat');
+            $this->$model = $admixture->admixtureType->typeable->toArray();
+            return $this->admixture;
         }
         return null;
     }
 
-    public function getType($typeable_type)
+    /**
+     * Display  the specified resource.
+     *
+     * @param object $typeable_type
+     * @return int $type
+     */
+    public function getType($typeable_type): int
     {
         $model = class_basename($typeable_type);
         $type = Arr::where($this->types, function ($value, $key) use ($model) {
@@ -128,7 +155,13 @@ class Admixtures extends Component
         return key($type);
     }
 
-    public function edit(Admixture $admixture)
+    /**
+     * View to edit the specified resource.
+     *
+     * @param Admixture $admixture
+     * @return Admixture $admixture|null
+     */
+    public function edit(Admixture $admixture): Admixture|null
     {
         if ($admixture) {
             $this->view = "edit";
@@ -136,23 +169,18 @@ class Admixtures extends Component
             $this->admixture = $admixture->load('admixtureType')->toArray();
             $this->admixture['type'] = $this->type;
             $this->updatedAdmixtureType($this->admixture['type'], 1);
-
-            switch ($this->admixture['type']) {
-                case 1:
-                    $this->fruit = $admixture->admixtureType->typeable->toArray();
-                    break;
-                case 2:
-                    $this->vegetable = $admixture->admixtureType->typeable->toArray();
-                    break;
-                case 3:
-                    $this->meat = $admixture->admixtureType->typeable->toArray();
-                    break;
-            } //dd($this->vegetable);
-            return $this->view;
+            $model = ($this->admixture['type'] == 1) ? 'fruit' : ($this->admixture['type'] == 2 ? 'vegetable' : 'meat');
+            $this->$model = $admixture->admixtureType->typeable->toArray();
+            return $this->admixture;
         }
         return null;
     }
 
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @return Admixture $admixture|null
+     */
     public function update()
     {
         $admixture = Admixture::findOrfail($this->admixture['id']);
@@ -172,7 +200,6 @@ class Admixtures extends Component
                 $admixture->save();
                 $modelType->type()->delete();
                 $modelType->delete();
-                //$validatedData['admixture']['type_id'] = $admixtureType->id;
             } else {
                 $modelType->update($validatedType);
             }
@@ -183,6 +210,12 @@ class Admixtures extends Component
         return null;
     }
 
+    /**
+     * Display message delete.
+     * 
+     * @param integer $id
+     * @return Admixture $admixture|null
+     */
     public function deleteConfirm($id)
     {
         $this->admixture = Admixture::find($id);
@@ -190,22 +223,35 @@ class Admixtures extends Component
         $this->dispatchBrowserEvent('delete_confirm');
     }
 
-    public function delete()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return  void|null
+     */
+    public function delete(): void|null
     {
-        $admixture = Admixture::find($this->admixture['id']);        
+        $admixture = Admixture::find($this->admixture['id']);
         $modelType = $admixture->admixtureType->typeable;
-        if ($admixture) { 
+        if ($admixture) {
             $admixture->type_id = null;
             $admixture->save();
             $modelType->type()->delete();
             $modelType->delete();
             $admixture->delete();
+            return;
         }
+        return null;
     }
 
-    public function back()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return void
+     */
+    public function back(): void
     {
         $this->resetValidation();
-        return $this->reset();
+        $this->reset();
+        return;
     }
 }

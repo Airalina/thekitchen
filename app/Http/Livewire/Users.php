@@ -16,18 +16,21 @@ class Users extends Component
     public $view = 'index', $order = 'id', $search = '', $pages = 10;
     public $orderItems = [], $thItems = [], $user = [], $roles = [];
 
-
     public function __construct()
     {
+        //users data
         $this->orderItems = [
             'id' => 'ID',
             'name' => 'Nombre',
             'email' => 'Email'
         ];
-        //$this->thItems = ['Código', 'Descripción', 'Cliente', 'Precio U$D', 'Fecha de Ingreso'];
-
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function render()
     {
         $this->roles = Role::all()->toArray();
@@ -38,13 +41,23 @@ class Users extends Component
         ]);
     }
 
-    public function create()
+    /**
+     * View to create a resource in storage.
+     *
+     * @return string $view
+     */
+    public function create(): string
     {
         $this->view = 'create';
         return $this->view;
     }
 
-    public function store()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return User $user
+     */
+    public function store(): User
     {
         $validations = validateUsers($this->view);
         $validatedData = $this->validate($validations);
@@ -52,29 +65,47 @@ class Users extends Component
         $user = User::create($validatedData['user']);
         $user->assignRole($validatedData['user']['rols']);
         $this->reset();
+        return $user;
     }
 
-    public function show(User $user)
+    /**
+     * Display  the specified resource.
+     *
+     * @param User $user
+     * @return User $user|null
+     */
+    public function show(User $user): User|null
     {
         if ($user) {
             $this->view = "show";
             $this->user = $user->toArray();
-            return $this->view;
+            return $this->user;
         }
         return null;
     }
 
+    /**
+     * View to edit the specified resource.
+     *
+     * @param User $user
+     * @return User $user|null
+     */
     public function edit(User $user)
     {
         if ($user) {
             $this->view = "edit";
             $this->user = $user->toArray();
-            return $this->view;
+            return $this->user;
         }
         return null;
     }
 
-    public function update()
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @return User $user|null
+     */
+    public function update(): User|null
     {
         $user = User::findOrfail($this->user['id']);
         if ($user) {
@@ -89,24 +120,46 @@ class Users extends Component
         return null;
     }
 
-    public function deleteConfirm($id)
+    /**
+     * Display message delete.
+     * 
+     * @param integer $id
+     * @return User $user|null
+     */
+    public function deleteConfirm($id): User|null
     {
         $this->user = User::find($id);
-
-        $this->dispatchBrowserEvent('delete_confirm');
+        if ($this->user) {
+            $this->dispatchBrowserEvent('delete_confirm');
+            return $this->user;
+        }
+        return null;
     }
 
-    public function delete()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return  void|null
+     */
+    public function delete() : void|null
     {
         $user = User::find($this->user['id']);
         if ($user) {
             $user->delete();
+            return;
         }
+        return null;
     }
 
-    public function back()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return void
+     */
+    public function back() : void
     {
         $this->resetValidation();
-        return $this->reset();
+        $this->reset();
+        return; 
     }
 }

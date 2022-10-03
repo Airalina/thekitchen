@@ -25,6 +25,11 @@ class Providers extends Component
         $this->provider['status'] = true;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function render()
     {
         $this->providers = Provider::search($this->search, $this->order)->paginate($this->pages);
@@ -34,31 +39,54 @@ class Providers extends Component
         ]);
     }
 
-    public function create()
+    /**
+     * View to create a resource in storage.
+     *
+     * @return string $view
+     */
+    public function create(): string
     {
         $this->view = 'create';
         return $this->view;
     }
 
-    public function store()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Provider $provider
+     */
+    public function store(): Provider
     {
         $validations = validateProviders();
         $validatedData = $this->validate($validations);
         $provider = Provider::create($validatedData['provider']);
         $this->back();
+        return $provider;
     }
 
-    public function show(Provider $provider)
+    /**
+     * Display  the specified resource.
+     *
+     * @param Provider $provider
+     * @return Provider $provider|null
+     */
+    public function show(Provider $provider): Provider|null
     {
         if ($provider) {
             $this->view = "show";
             $this->provider = $provider->toArray();
-            return $this->view;
+            return $this->provider;
         }
         return null;
     }
 
-    public function backShow(Provider $provider)
+    /**
+     * Display  the specified resource.
+     *
+     * @param Provider $provider
+     * @return Provider $provider|null
+     */
+    public function backShow(Provider $provider): Provider|null
     {
         if ($provider) {
             // $this->reset('deliveryAddress');
@@ -67,17 +95,28 @@ class Providers extends Component
         return null;
     }
 
-    public function edit(Provider $provider)
+    /**
+     * View to edit the specified resource.
+     *
+     * @param Provider $provider
+     * @return Provider $provider|null
+     */
+    public function edit(Provider $provider): Provider|null
     {
         if ($provider) {
             $this->view = "edit";
             $this->provider = $provider->toArray();
-            return $this->view;
+            return $this->provider;
         }
         return null;
     }
 
-    public function update()
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @return Provider $provider|null
+     */
+    public function update(): Provider|null
     {
         $provider = Provider::findOrfail($this->provider['id']);
         if ($provider) {
@@ -90,23 +129,46 @@ class Providers extends Component
         return null;
     }
 
+    /**
+     * Display message delete.
+     * 
+     * @param integer $id
+     * @return Provider $provider|null
+     */
     public function deleteConfirm($id)
     {
         $this->provider =  Provider::find($id);
-        $this->dispatchBrowserEvent('delete_confirm');
+        if ($this->provider) {
+            $this->dispatchBrowserEvent('delete_confirm');
+            return $this->provider;
+        }
+        return null;
     }
 
-    public function delete()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return  void|null
+     */
+    public function delete(): void|null
     {
         $provider = Provider::find($this->provider['id']);
         if ($provider) {
             $provider->delete();
+            return;
         }
+        return null;
     }
 
-    public function back()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return void
+     */
+    public function back(): void
     {
         $this->resetValidation();
-        return $this->reset();
+        $this->reset();
+        return;
     }
 }
