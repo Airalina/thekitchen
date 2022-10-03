@@ -17,9 +17,9 @@ function validateUsers($view = '')
 function validateRoles()
 {
     return [
-        'role.name'=>'required|string|min:3',
-        'dataPermissions.permissionsSelected'=>'required',
-        'dataPermissions.permissionsSelected.*'=>'required',
+        'role.name' => 'required|string|min:3',
+        'dataPermissions.permissionsSelected' => 'required',
+        'dataPermissions.permissionsSelected.*' => 'required',
     ];
 }
 
@@ -34,9 +34,9 @@ function validateClients()
         'client.status' => 'nullable|boolean',
     ];
     $validationDelivery = validateDeliveryAddresses();
-    $validation= array_merge($validationClients, $validationDelivery);
+    $validation = array_merge($validationClients, $validationDelivery);
     return $validation;
-}            
+}
 
 function validateDeliveryAddresses()
 {
@@ -46,7 +46,7 @@ function validateDeliveryAddresses()
         'deliveryAddress.country' => 'required|string|min:3|max:30',
         'deliveryAddress.postcode' => 'required|integer|min:1|max:100000',
     ];
-}     
+}
 
 function validateProviders()
 {
@@ -60,4 +60,25 @@ function validateProviders()
         'provider.status' => 'nullable|boolean',
         'provider.url' => 'nullable|regex: ' . $regex
     ];
-}     
+}
+
+function validateAdmixtures()
+{
+    return [
+        'admixture.code' => 'required|max:20',
+        'admixture.name' => 'nullable',
+        'admixture.description' => 'nullable|max:500',
+        'admixture.replace_id' => 'nullable',
+        'admixture.stock' => 'nullable',
+        'admixture.type' => 'nullable',
+        'fruit' => 'sometimes',
+        'fruit.classification' => 'required_if:type,1|nullable|numeric|integer',
+        'fruit.preparation' => 'required_if:type,1|nullable|numeric|integer',
+        'vegetable' => 'sometimes',
+        'vegetable.type' => 'required_if:type,2|nullable|numeric|integer',
+        'vegetable.derivation' => 'nullable',
+        'meat' => 'sometimes',
+        'meat.type' => 'numeric|required_if:type,3|nullable|numeric|integer',
+        'meat.conservation' => 'nullable'
+    ];
+}

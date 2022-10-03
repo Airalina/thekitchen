@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vegetables', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('admixtures', function (Blueprint $table) {
+            $table->foreignId('type_id')->nullable()->constrained('admixture_types')->after('replace_id');
         });
     }
 
@@ -26,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vegetables');
+        Schema::table('admixture', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('fruits', function (Blueprint $table) {
             $table->id();
+            $table->integer('classification')->nullable();
+            $table->integer('preparation')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

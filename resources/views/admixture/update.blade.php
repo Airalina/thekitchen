@@ -6,11 +6,10 @@
         </div>
         <form>
             <div class="card-body">
-                <x-roles.form-role disabled='0' :dataPermissions="$dataPermissions" />
+                <x-admixtures.form-admixture disabled='0' :types="$types" :typeSelected="$typeSelected" :typeData="$typeData"
+                    :replaces="$replaces" />
             </div>
         </form>
         <x-layouts.form-buttons method="update" name='Guardar' />
     </div>
 </div>
-
-<x-roles.modal-select-permissions :permission="$permission" />

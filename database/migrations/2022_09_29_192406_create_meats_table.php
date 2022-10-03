@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('meats', function (Blueprint $table) {
             $table->id();
+            $table->integer('type')->nullable();
+            $table->string('conservation')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

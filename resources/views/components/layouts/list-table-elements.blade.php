@@ -24,5 +24,13 @@
         <td class="text-center">{{ $element->cuit }}</td>
     @break
 
+    @case('ingredientes')
+        <td class="text-center">{{ $element->code }}</td>
+        <td class="text-center">{{ $element->description }}</td>
+        <td class="text-center">{{ $element->name }}</td>
+        <td class="text-center">{{ $element->replace_id }}</td>
+        <td class="text-center">{{ $element->stock }}</td>
+    @break
+
     @default
 @endswitch
